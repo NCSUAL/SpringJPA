@@ -2,9 +2,11 @@ package Project.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Table(name = "ORDER_ITEM")
+@Data
 public class OrderItem {
 
     @Column(name = "ORDER_ITEM_ID")
@@ -12,23 +14,27 @@ public class OrderItem {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "ORDER_ID")
-    private Long orderId;
-    @Column(name = "ITEM_ID")
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "ITEM_ID")
+    private Item item;
+
     private int orderPrice;
     private int count;
 
     @Builder
-    public OrderItem(Long id, Long orderId, Long itemId, int orderPrice, int count) {
+    public OrderItem(Long id, Order order, Item item, int orderPrice, int count) {
         this.id = id;
-        this.orderId = orderId;
-        this.itemId = itemId;
+        this.order = order;
+        this.item = item;
         this.orderPrice = orderPrice;
         this.count = count;
     }
 
-    protected OrderItem(){
+    public OrderItem(){
 
     }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name ="ORDERS")
@@ -14,20 +16,30 @@ public class Order {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "MEMBER_ID")
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @OneToMany(mappedBy = "order")
+    private final List<OrderItem> orderItems = new ArrayList<>();
+
     private LocalDate orderDate;
     private OrderStatus status;
 
     @Builder
-    public Order(Long id, Long memberId, LocalDate orderDate, OrderStatus status) {
+    public Order(Long id, Member member, LocalDate orderDate, OrderStatus status) {
         this.id = id;
-        this.memberId = memberId;
+        this.member = member;
         this.orderDate = orderDate;
         this.status = status;
     }
 
     protected Order(){
 
+    }
+
+    public void addOrderItems(OrderItem orderItem) {
+        orderItem.setOrder(this);
+        orderItems.add(orderItem);
     }
 }

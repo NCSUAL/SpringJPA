@@ -1,5 +1,7 @@
 package Project;
 
+import Project.domain.Order;
+import Project.domain.OrderItem;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
@@ -35,6 +37,9 @@ public class Main {
 //                System.out.println(member.getName());
 //            }
 
+
+            Order order = Order.builder().build();
+            order.addOrderItems(new OrderItem());
             //작업 알림
             tx.commit();
         }
